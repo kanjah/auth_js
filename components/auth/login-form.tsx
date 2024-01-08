@@ -26,9 +26,15 @@ import { FormSuccess } from "../form-success";
 
 
 export const LoginForm = () => {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
+  const urlError = searchParams.get("error") === "OAuthAccountNotLinked"
+    ? "Email already in use with different provider!"
+    : "";
+
     //set error and success message
     const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
+    const [success, setSuccess] = useState<string | undefined>("");
 
     // get isPending from useTransition
     const [isPending, startTransition] = useTransition();
@@ -52,8 +58,8 @@ export const LoginForm = () => {
         startTransition(() => {
             login(values)
             .then((data) =>{
-                setError(data.error)
-                setSuccess(data.success)
+                setError(data?.error)
+                //setSuccess(data?.success)
             })
         })
     }
@@ -123,7 +129,7 @@ export const LoginForm = () => {
                   )}
                 />
             </div>
-            <FormError message={error} />
+            <FormError message={error || urlError} />
           <FormSuccess message={success} />
           
             {/* Login Button */}

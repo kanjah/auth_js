@@ -5,13 +5,13 @@
  * * NB: sub is the id of the user
  */
 
-import NextAuth from "next-auth";
+import NextAuth from "next-auth"
 import { UserRole } from "@prisma/client";
-import authConfig from "@/auth.config";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { db } from "@/lib/db";
-import { getUserById } from "@/data/user";
 
+import { db } from "@/lib/db";
+import authConfig from "@/auth.config";
+import { getUserById } from "@/data/user";
 
 
 export const {
@@ -21,6 +21,21 @@ export const {
   signIn,
   signOut
 } = NextAuth({
+  pages: {
+    signIn: "/auth/login",
+    error: "/auth/error",
+  },
+
+  // for email verification for both githbub and google and email
+  events: {
+    async linkAccount({ user }) {
+      await db.user.update({
+        where: { id: user.id },
+        data: { emailVerified: new Date() }
+      })
+    }
+  },
+  // callbacks
   callbacks: {
     
     async session({ token, session }) {
