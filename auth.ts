@@ -73,10 +73,10 @@ export const {
        if (token.role && session.user) {
          session.user.role = token.role as UserRole;
        }
-
-      // if (session.user) {
-      //   session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
-      // }
+      // used in server component, in app>(protected)>server
+      if (session.user) {
+        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
+      }
 
       // if (session.user) {
       //   session.user.name = token.name;
@@ -101,7 +101,9 @@ export const {
       // token.name = existingUser.name;
       // token.email = existingUser.email;
        token.role = existingUser.role;
-      // token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
+
+      //  used in server component, in app>(protected)>server
+       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
       //console.log({token})
       console.log({sessionToken:token})
       return token;
