@@ -35,21 +35,22 @@ export default auth((req) => {
      }
      return null;
    }
-
+// shows previous url visitated
    if (!isLoggedIn && !isPublicRoute) {
-    //  let callbackUrl = nextUrl.pathname;
-    //  if (nextUrl.search) {
-    //    callbackUrl += nextUrl.search;
+     let callbackUrl = nextUrl.pathname;
+     if (nextUrl.search) {
+       callbackUrl += nextUrl.search;
     return Response.redirect(new URL("/auth/login", nextUrl))
    }
+  
 
-//     const encodedCallbackUrl = encodeURIComponent(callbackUrl);
+    const encodedCallbackUrl = encodeURIComponent(callbackUrl);
 
-//     return Response.redirect(new URL(
-//       `/auth/login?callbackUrl=${encodedCallbackUrl}`,
-//       nextUrl
-//     ));
-//   }
+    return Response.redirect(new URL(
+      `/auth/login?callbackUrl=${encodedCallbackUrl}`,
+      nextUrl
+    ));
+  }
 
    return null;
  })
